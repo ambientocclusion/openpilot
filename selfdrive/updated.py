@@ -39,7 +39,7 @@ from common.params import Params
 from selfdrive.hardware import EON, TICI, HARDWARE
 from selfdrive.swaglog import cloudlog
 from selfdrive.controls.lib.alertmanager import set_offroad_alert
-from selfdrive.hardware.tici.agnos import flash_agnos_update
+from selfdrive.hardware.tici.agnos import flash_agnos_update, get_target_slot_number
 
 LOCK_FILE = os.getenv("UPDATER_LOCK_FILE", "/tmp/safe_staging_overlay.lock")
 STAGING_ROOT = os.getenv("UPDATER_STAGING_ROOT", "/data/safe_staging")
@@ -235,7 +235,8 @@ def handle_agnos_update(wait_helper):
   set_offroad_alert("Offroad_NeosUpdate", True)
 
   manifest_path = os.path.join(OVERLAY_MERGED, "selfdrive/hardware/tici/agnos.json")
-  flash_agnos_update(manifest_path, cloudlog)
+  target_slot_number = get_target_slot_number()
+  flash_agnos_update(manifest_path, target_slot_number, cloudlog)
   set_offroad_alert("Offroad_NeosUpdate", False)
 
 
