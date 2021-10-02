@@ -124,6 +124,8 @@ class LongControl():
       if not CS.standstill or output_accel > CP.stopAccel:
         output_accel -= CP.stoppingDecelRate * DT_CTRL
       output_accel = clip(output_accel, accel_limits[0], accel_limits[1])
+      if CS.standstill and output_accel < -0.2:
+        output_accel = -0.2
 
       self.reset(CS.vEgo)
 
