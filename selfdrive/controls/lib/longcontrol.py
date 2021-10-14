@@ -23,7 +23,7 @@ def long_control_state_trans(CP, active, long_control_state, v_ego, v_target, v_
                         ((v_pid < stopping_target_speed and v_target < stopping_target_speed) or
                          brake_pressed))
 
-  starting_condition = v_target > CP.vEgoStarting and not cruise_standstill
+  starting_condition = v_target > CP.vEgoStarting
 
   if not active:
     long_control_state = LongCtrlState.off
@@ -126,6 +126,8 @@ class LongControl():
       output_accel = clip(output_accel, accel_limits[0], accel_limits[1])
       if CS.standstill and output_accel < -0.2:
         output_accel = -0.2
+      if self.long_control_state == LongCtrlState.starting and output_accel < -0.05:
+        output_accel = -0.05
 
       self.reset(CS.vEgo)
 
